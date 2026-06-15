@@ -1,0 +1,73 @@
+using System.Text.RegularExpressions;
+using BidPulse.Database.Entities.Enums;
+using BidPulse.Database.Entities.Models;
+using ErrorOr;
+
+namespace BidPulse.Database.Entities;
+
+public sealed class User : Entity
+{
+    public string NickName { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
+    public string PasswordHash { get; private set; } = string.Empty;
+    public decimal Balance { get; private set; }
+    public Role Role { get; private set; } = Role.User;
+    
+    private static readonly Regex EmailRegex = new(
+        @"^[^@\s]+@[^@\s]+\.[^@\s]+$", 
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    private User(){}//ef
+
+    private User(Guid id, UserCreationParams args)
+    : base(id)
+    {
+        NickName = args.NickName;
+        Email = args.Email;
+        PasswordHash = args.PasswordHash;
+        Balance = args.Balance;
+        Role = args.Role;
+    }
+
+    public static ErrorOr<User> Create(UserCreationParams args)
+    {
+        var validationResult = ValidateInvariants(args.NickName, args.Email);
+        if (validationResult.IsError)
+            return validationResult.Errors;
+        
+        if (string.IsNullOrWhiteSpace(args.PasswordHash))
+            return Error.Validation("User.PasswordRequired", "Password hash cannot be empty.");
+
+        return new User(Guid.CreateVersion7(), args);
+    }
+
+    public ErrorOr<Updated> UpdateProfile(string name, string email)
+    {
+        var validationResult = ValidateInvariants(name, email);
+        if (validationResult.IsError)
+            return validationResult.Errors;
+
+        NickName = name;
+        Email = email;
+
+        return Result.Updated;
+    }
+
+    public ErrorOr<Updated> ChangeRole(Role newRole)
+    {
+        Role = newRole;
+            
+        return Result.Updated;
+    }
+    
+    private static ErrorOr<Success> ValidateInvariants(string name, string email)
+    {
+        if (string.IsNullOrWhiteSpace(name) || name.Length < 6)
+            return Error.Validation("User.InvalidName", "User name must be at least 6 characters long.");
+
+        if (string.IsNullOrWhiteSpace(email) || !EmailRegex.IsMatch(email))
+            return Error.Validation("User.InvalidEmail", "A valid email address is required.");
+
+        return Result.Success;
+    }
+}
