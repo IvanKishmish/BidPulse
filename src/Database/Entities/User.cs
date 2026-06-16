@@ -62,12 +62,14 @@ public sealed class User : Entity
     
     private static ErrorOr<Success> ValidateInvariants(string name, string email)
     {
+        var errors = new List<Error>();
+        
         if (string.IsNullOrWhiteSpace(name) || name.Length < 6)
-            return Error.Validation("User.InvalidName", "User name must be at least 6 characters long.");
+            errors.Add(Error.Validation("User.InvalidName", "User name must be at least 6 characters long."));
 
         if (string.IsNullOrWhiteSpace(email) || !EmailRegex.IsMatch(email))
-            return Error.Validation("User.InvalidEmail", "A valid email address is required.");
+            errors.Add(Error.Validation("User.InvalidEmail", "A valid email address is required."));
 
-        return Result.Success;
+        return errors.Count > 0 ? errors : Result.Success;
     }
 }
