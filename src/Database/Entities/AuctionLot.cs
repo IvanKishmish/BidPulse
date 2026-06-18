@@ -90,6 +90,54 @@ public sealed class AuctionLot : Entity
         return Result.Updated;
     }
 
+    /// <summary>
+    /// Advances the current price to the winning bid amount.
+    /// Called exclusively by BidService inside a transaction after all validations pass.
+    /// </summary>
+    public ErrorOr<Updated> SetCurrentPrice(decimal newPrice)
+    {
+        if (newPrice <= CurrentPrice)
+            return Error.Validation(
+                "AuctionLot.InvalidPrice",
+                "New price must be strictly greater than the current price.");
+ 
+        CurrentPrice = newPrice;
+        return Result.Updated;
+    }
+ 
+    /// <summary>
+    /// Cancels the lot. The caller is responsible for refunding the current top bidder.
+    /// </summary>
+    public ErrorOr<Updated> Cancel()
+    {
+        if (Status == LotStatus.Completed)
+            return Error.Validation(
+                "AuctionLot.AlreadyCompleted",
+                "Cannot cancel an auction that has already been completed.");
+ 
+        if (Status == LotStatus.Cancelled)
+            return Error.Validation(
+                "AuctionLot.AlreadyCancelled",
+                "This auction lot has already been cancelled.");
+ 
+        Status = LotStatus.Cancelled;
+        return Result.Updated;
+    }
+ 
+    /// <summary>
+    /// Marks the lot as completed (e.g., called by a background job when EndsAt is reached).
+    /// </summary>
+    public ErrorOr<Updated> Complete()
+    {
+        if (Status != LotStatus.Active)
+            return Error.Validation(
+                "AuctionLot.NotActive",
+                "Only active auctions can be marked as completed.");
+ 
+        Status = LotStatus.Completed;
+        return Result.Updated;
+    }
+    
     private static ErrorOr<Success> ValidateInvariants(AuctionLotCreationParams args)
     {
         var errors = new List<Error>();

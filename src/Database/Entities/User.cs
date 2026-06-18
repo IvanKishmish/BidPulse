@@ -60,6 +60,27 @@ public sealed class User : Entity
         return Result.Updated;
     }
     
+    public ErrorOr<Updated> AddToBalance(decimal amount)
+    {
+        if (amount <= 0)
+            return Error.Validation("User.InvalidAmount", "Amount to add must be greater than zero.");
+ 
+        Balance += amount;
+        return Result.Updated;
+    }
+    
+    public ErrorOr<Updated> DeductFromBalance(decimal amount)
+    {
+        if (amount <= 0)
+            return Error.Validation("User.InvalidAmount", "Amount to deduct must be greater than zero.");
+ 
+        if (Balance < amount)
+            return Error.Validation("User.InsufficientFunds", "Insufficient balance to complete the operation.");
+ 
+        Balance -= amount;
+        return Result.Updated;
+    }
+    
     private static ErrorOr<Success> ValidateInvariants(string name, string email)
     {
         var errors = new List<Error>();
