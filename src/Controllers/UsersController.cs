@@ -28,9 +28,9 @@ public sealed class UsersController(IUserService userService) : ApiController
         return result.Match(Ok, Problem);
     }
  
-    /// <summary>Registers a new user account.</summary>
+    /// <summary>Creates a user account directly. Admin only — for self-registration use POST /api/auth/register.</summary>
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -82,4 +82,5 @@ public sealed class UsersController(IUserService userService) : ApiController
         var result = await userService.DeleteAsync(id, ct);
         return result.Match(_ => NoContent(), Problem);
     }
+
 }
