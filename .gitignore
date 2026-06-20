@@ -1,48 +1,96 @@
-# .NET
+# ==========================================
+# .NET / C#
+# ==========================================
 bin/
 obj/
-
-# User-specific files
-.vscode/
-.idea/
-
-# .env files (якщо не хочете, щоб ці файли потрапляли в git)
-.env
-.env.local
-.env.*.local
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# User-specific files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Build results
 [Dd]ebug/
 [Dd]ebugPublic/
 [Dd]Release/
 [Dd]ReleasePublic/
-
-# JetBrains Rider
-.idea/
+*.DotSettings.user
 
 # ASP.NET Core
 wwwroot/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Якщо wwwroot містить статичні файли розробника, зазвичай його не ігнорують повністю. 
+# Але якщо це згенерований SPA-білд, то рядок вище залишається актуальним.
 
 # Logs
 *.log
 **/logs/
 
-*.DotSettings.user
+# ==========================================
+# Node.js / Frontend (React, Vue, JS/TS)
+# ==========================================
+# Dependencies
+node_modules/
+jspm_packages/
+web_deploy/
+
+# Production build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+
+# Tool caches and histories
+.eslintcache
+.stylelintcache
+.tsbuildinfo
+.npm
+.node_repl_history
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing and Coverage
+coverage/
+.nyc_output
+cypress/videos/
+cypress/screenshots/
+
+# ==========================================
+# IDEs, Editors & User-specific files
+# ==========================================
+# JetBrains (Rider, Resharper, WebStorm)
+.idea/
+*.sln.iml
+*.suo
+*.user
+*.userosscache
+*.sln.docattachments
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+
+# Text editors
+*.swp
+*.swo
+*~
+
+# Environment variables (Sensitive data)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# ==========================================
+# Operating System files
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
