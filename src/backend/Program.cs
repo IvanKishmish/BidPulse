@@ -15,6 +15,19 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder();
 
+const string corsPolicyName = "BidPulseCorsPolicy";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicyName, policy =>
+    {
+        policy.WithOrigins("http://localhost:5000") 
+            .AllowAnyMethod()                                            
+            .AllowAnyHeader()                                            
+            .AllowCredentials();                                         
+    });
+});
+
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>() 
                   ?? throw new InvalidOperationException("JWT Settings are not configured.");
@@ -93,6 +106,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicyName);
 
 app.UseAuthentication();
 app.UseAuthorization();
