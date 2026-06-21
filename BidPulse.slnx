@@ -1,3 +1,8 @@
 <Solution>
-  <Project Path="src/BidPulse.csproj" />
+  <Folder Name="/Core/">
+    <Project Path="src\BidPulse.Domain\BidPulse.Domain.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Infrastructure/" />
+  <Folder Name="/Presentation/" />
+  <Folder Name="/Tests/" />
 </Solution>
