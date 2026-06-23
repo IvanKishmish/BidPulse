@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using BidPulse.Domain.Entities.Models;
 using BidPulse.Domain.Enums;
 using ErrorOr;
