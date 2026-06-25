@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BidPulse.Application\BidPulse.Application.csproj" />
       <ProjectReference Include="..\BidPulse.Domain\BidPulse.Domain.csproj" />
       <ProjectReference Include=".\src\BidPulse.Domain\BidPulse.Domain.csproj" />
     </ItemGroup>
