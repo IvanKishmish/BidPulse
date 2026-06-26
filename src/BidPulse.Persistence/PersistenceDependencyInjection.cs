@@ -25,6 +25,9 @@ public static class PersistenceDependencyInjection
                 .AddInterceptors(auditingInterceptor);
         });
         
+        services.AddScoped<IAppDbContext>(sp => 
+            sp.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
+        
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
