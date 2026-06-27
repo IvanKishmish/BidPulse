@@ -1,3 +1,4 @@
+using BidPulse.Application.Common.Dtos;
 using BidPulse.Application.Common.Interfaces;
 using Immediate.Handlers.Shared;
 using Microsoft.EntityFrameworkCore;
