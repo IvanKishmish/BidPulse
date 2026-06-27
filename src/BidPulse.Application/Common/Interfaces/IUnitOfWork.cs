@@ -3,5 +3,7 @@ namespace BidPulse.Application.Common.Interfaces;
 public interface IUnitOfWork
 {
     Task<int> SaveChangesAsync(CancellationToken ct = default);
-    //later gonna add transactions
+    Task BeginTransactionAsync(CancellationToken ct = default);
+    Task CommitAsync(CancellationToken ct = default);
+    Task RollbackAsync(CancellationToken ct = default);
 }
