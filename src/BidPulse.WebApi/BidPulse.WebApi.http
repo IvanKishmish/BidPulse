@@ -1,0 +1,6 @@
+@BidPulse.WebApi_HostAddress = http://localhost:5277
+
+GET {{BidPulse.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
